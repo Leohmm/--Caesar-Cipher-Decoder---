@@ -1,1 +1,88 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <iomanip>
+#include <string>
+#include <locale>
+#include <cctype>
+
+using namespace std;
+
+int main(){
+
+    ifstream leitura;
+
+
+    setlocale (LC_ALL, "");
+
+    char  caracter, palavraC, palavra[200], aux[200], decodificado;
+    unsigned int chave=1, i=0, c=0, NumLetras=0;
+    string NomeArq, textFile, textFile2, mensagem;
+
+
+    cout << "Escreva o nome do arquivo" << endl;
+
+    cin >> NomeArq;
+
+    cout<<"Digite a chave"<<endl;
+
+    cin>>chave;
+
+  textFile = NomeArq + ".txt";
+
+  if (!leitura)
+      {
+
+  cerr << " Arquivo saida.txt nao pode ser aberto" << endl;
+
+  return -1;}
+
+
+leitura.open (textFile.c_str (), ios::in);
+
+  while (leitura.get(palavra,200))
+   {
+       while(chave <= 26)
+    {
+        i = 0;
+        while(palavra[i] != '\0')
+        {
+            aux[i] = palavra[i] + chave;
+            if((palavra[i] + chave) > 122)
+            {
+                aux[i] -=26;
+            }
+            if((palavra[i] + chave) < 97)
+            {
+                aux[i] += 26;
+            }
+            i++;
+        }
+        aux[i] = '\0';
+        cout<<endl;
+        cout<<"chave: "<<chave<<endl<<" palavra: "<<aux<<endl;
+        if(chave%5 == 0)
+        {
+            cout<<endl;
+        }
+        chave++;
+    }
+   }
+    leitura.close();
+
+      ofstream decMsg;
+      textFile2 = NomeArq + "_dec" +".txt";
+      decMsg.open(textFile2.c_str (), ios::out);
+if (! decMsg){
+  cerr << " Arquivo .txt nao pode ser aberto" << endl;
+
+  return -1;
+}
+
+decMsg << "Mensagem decodificada "<< chave<<endl<<" palavra: "<<aux<< endl;
+
+    decMsg.close();
+    return 0;
+        }
+
 
